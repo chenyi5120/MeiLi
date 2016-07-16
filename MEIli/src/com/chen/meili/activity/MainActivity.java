@@ -1,39 +1,77 @@
-package com.chen.meili.activity.main;
+package com.chen.meili.activity;
 
 import com.chen.meili.R;
-import com.chen.meili.R.id;
-import com.chen.meili.R.layout;
-import com.chen.meili.R.menu;
+import com.utils.EditUtil;
+import com.utils.snackbar.SnackBar;
+import com.utils.snackbar.SnackBar.Style;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Parcelable;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
+
+	private EditText editText;
+	// private Context context;
+	private EditUtil eUtil;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		eUtil = new EditUtil(this);
+		editText = (EditText) findViewById(R.id.editText1);
+		editText.setImeOptions(EditorInfo.IME_ACTION_SEND);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	public void click(View v) {
+		switch (v.getId()) {
+		case R.id.button1:
+			// 关闭键盘
+			// SnackBar.makeMsg(this, "提示消息", (short) 1500).show();
+			editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+			eUtil.getInputMed().open(editText);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+			break;
+		case R.id.button2:
+			eUtil.getInputMed().close(editText);
+			SnackBar.makeMsg(this, "有action 点击 ", "OK", (short) 0).show();
+
+			break;
+		case R.id.button3:
+			SnackBar.makeMsg(this, "有监听的", "ok", new SnackBar.OnMessageClickListener() {
+
+				@Override
+				public void onMessageClick(Parcelable token) {
+					// SnackBar.makeMsg(MainActivity.this, "点击事件",
+					// SnackBar.LONG_SNACK).show();
+					Toast.makeText(MainActivity.this, "点击事件", 0).show();
+				}
+			}, SnackBar.LONG_SNACK).withStyle(Style.CONFIRM).show();
+			break;
+
 		}
-		return super.onOptionsItemSelected(item);
+
 	}
+
+	/**
+	 * 点击退出
+	 */
+	@Override
+
+	public void onBackPressed() {
+
+		SnackBar.makeMsg(this, "确定退出？", "确定", new SnackBar.OnMessageClickListener() {
+
+			@Override
+			public void onMessageClick(Parcelable token) {
+				MainActivity.this.finish();
+			}
+		}, SnackBar.SHORT_SNACK).withStyle(Style.CONFIRM).show();
+
+	}
+
 }

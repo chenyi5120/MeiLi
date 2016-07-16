@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_title">#393A3F</color>
+    
+    <color name="bg_Skyblue">#0CB8F6</color>
+    <color name="bg_white">#FFFFFF</color>
+    <color name="bg_blue">#ff0000ff</color>
+    <color name="bg_blue2">#880000ff</color>
+    
+</resources>
